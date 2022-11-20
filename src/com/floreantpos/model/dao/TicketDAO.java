@@ -592,7 +592,7 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
-	public List<Ticket> findTicketsForLaborHour(Date startDate, Date endDate, int hour, UserType userType, Terminal terminal) {
+	public List<Ticket> findTicketsForLaborHour(Date startDate, Date endDate, int hour, String userType, Terminal terminal) {
 		Session session = null;
 		try {
 			session = getSession();
@@ -617,7 +617,7 @@ public class TicketDAO extends BaseTicketDAO {
 		}
 	}
 
-	public List<Ticket> findTicketsForShift(Date startDate, Date endDate, Shift shit, UserType userType, Terminal terminal) {
+	public List<Ticket> findTicketsForShift(Date startDate, Date endDate, Shift shit, String userType, Terminal terminal) {
 		Session session = null;
 		try {
 			session = getSession();
