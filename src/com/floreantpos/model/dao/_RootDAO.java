@@ -106,7 +106,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 	}
 
 	public static Configuration getNewConfiguration(String configFileName) {
-		AnnotationConfiguration configuration = new AnnotationConfiguration();
+		Configuration configuration = new Configuration();
 		configuration = configuration.addClass(ActionHistory.class);
 		configuration = configuration.addClass(AttendenceHistory.class);
 		configuration = configuration.addClass(CashDrawerResetHistory.class);
@@ -181,7 +181,7 @@ public abstract class _RootDAO extends com.floreantpos.model.dao._BaseRootDAO {
 		return configuration;
 	}
 	
-	private static AnnotationConfiguration configureInventoryClasses(AnnotationConfiguration configuration) {
+	private static Configuration configureInventoryClasses(Configuration configuration) {
 		configuration = configuration.addClass(InventoryGroup.class);
 		configuration = configuration.addClass(InventoryItem.class);
 		configuration = configuration.addClass(InventoryLocation.class);

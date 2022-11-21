@@ -24,9 +24,11 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Set;
 
+import com.floreantpos.util.HibernateUtil;
 import org.hibernate.Hibernate;
 
 import com.floreantpos.model.base.BaseShopFloor;
+import org.hibernate.Session;
 
 public class ShopFloor extends BaseShopFloor {
 	private static final long serialVersionUID = 1L;
@@ -67,7 +69,12 @@ public class ShopFloor extends BaseShopFloor {
 
 	@Override
 	public Blob getImage() {
-		return Hibernate.createBlob(this.imageData);
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Blob image = Hibernate.getLobCreator(session).createBlob(this.imageData);
+		session.getTransaction().commit();
+
+		return image;
 	}
 	
 	@Override

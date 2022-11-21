@@ -29,6 +29,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.jdbc.Work;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 
@@ -87,23 +88,27 @@ public class DatabaseUtil {
 	}
 
 	private static void dropModifiedTimeColumn(Session session) throws SQLException {
-		Connection connection = session.connection();
-		String[] tables = {"CUSTOMER","GRATUITY","INVENTORY_GROUP","INVENTORY_ITEM","INVENTORY_LOCATION",
-				"INVENTORY_META_CODE","INVENTORY_TRANSACTION","INVENTORY_TRANSACTION_TYPE","INVENTORY_UNIT",
-				"INVENTORY_VENDOR","INVENTORY_WAREHOUSE","KITCHEN_TICKET","KITCHEN_TICKET_ITEM",
-				"MENUITEM_MODIFIERGROUP","MENU_CATEGORY","MENU_GROUP","MENU_ITEM","MENU_MODIFIER",
-				"MENU_MODIFIER_GROUP","PURCHASE_ORDER","TAX","TERMINAL","TICKET","TICKETITEM_MODIFIERGROUP",
-				"TICKET_ITEM","TRANSACTIONS","USERS","ZIP_CODE_VS_DELIVERY_CHARGE"};
-		
-		for (String table : tables) {
-			try {
-				Statement statement = connection.createStatement();
-				statement.execute("ALTER TABLE " + table + " DROP COLUMN MODIFIED_TIME");
-			} catch (Exception e) {
-				//logger.error(e);
+		session.doWork(new Work() {
+			@Override
+			public void execute(Connection connection) throws SQLException {
+				String[] tables = {"CUSTOMER","GRATUITY","INVENTORY_GROUP","INVENTORY_ITEM","INVENTORY_LOCATION",
+						"INVENTORY_META_CODE","INVENTORY_TRANSACTION","INVENTORY_TRANSACTION_TYPE","INVENTORY_UNIT",
+						"INVENTORY_VENDOR","INVENTORY_WAREHOUSE","KITCHEN_TICKET","KITCHEN_TICKET_ITEM",
+						"MENUITEM_MODIFIERGROUP","MENU_CATEGORY","MENU_GROUP","MENU_ITEM","MENU_MODIFIER",
+						"MENU_MODIFIER_GROUP","PURCHASE_ORDER","TAX","TERMINAL","TICKET","TICKETITEM_MODIFIERGROUP",
+						"TICKET_ITEM","TRANSACTIONS","USERS","ZIP_CODE_VS_DELIVERY_CHARGE"};
+
+				for (String table : tables) {
+					try {
+						Statement statement = connection.createStatement();
+						statement.execute("ALTER TABLE " + table + " DROP COLUMN MODIFIED_TIME");
+					} catch (Exception e) {
+						//logger.error(e);
+					}
+				}
+				connection.commit();
 			}
-		}
-		connection.commit();
+		});
 	}
 
 	public static boolean createDatabase(String connectionString, String hibernateDialect, String hibernateConnectionDriverClass, String user, String password, boolean exportSampleData) {

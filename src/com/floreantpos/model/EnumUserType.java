@@ -30,7 +30,7 @@ import org.hibernate.usertype.UserType;
 
 import com.floreantpos.Messages;
 
-public class EnumUserType implements UserType, ParameterizedType {  
+public abstract class EnumUserType implements UserType, ParameterizedType {
      
    private Class clazz = null;  
      

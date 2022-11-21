@@ -31,7 +31,7 @@ import javax.swing.JPanel;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 
 import com.floreantpos.Database;
 import com.floreantpos.Messages;
