@@ -20,16 +20,17 @@ package com.floreantpos.util;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.jdbc.Work;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 
@@ -50,6 +51,7 @@ import com.floreantpos.model.dao.TicketDAO;
 import com.floreantpos.model.dao.UserDAO;
 import com.floreantpos.model.dao.UserTypeDAO;
 import com.floreantpos.model.dao._RootDAO;
+import org.hibernate.tool.schema.TargetType;
 
 public class DatabaseUtil {
 	private static Log logger = LogFactory.getLog(DatabaseUtil.class);
@@ -123,8 +125,26 @@ public class DatabaseUtil {
 			configuration = configuration.setProperty("hibernate.connection.password", password);
 			configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "create");
 
-			SchemaExport schemaExport = new SchemaExport(configuration);
-			schemaExport.create(true, true);
+
+/*
+			Map<String, String> settings = new HashMap<>();
+			settings.put("hibernate.connection.driver_class", hibernateConnectionDriverClass);
+			settings.put("hibernate.dialect", hibernateDialect);
+
+			settings.put("hibernate.connection.url", connectionString);
+			settings.put("hibernate.connection.username", user);
+			settings.put("hibernate.connection.password", password);
+			settings.put("hibernate.hbm2ddl.auto", "create");
+*/
+			StandardServiceRegistryBuilder serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+			MetadataSources metadata = new MetadataSources(serviceRegistry.build());
+
+			EnumSet<TargetType> enumSet = EnumSet.of(TargetType.DATABASE);
+			SchemaExport schemaExport = new SchemaExport();
+			schemaExport.execute(enumSet, SchemaExport.Action.BOTH, metadata.buildMetadata());
+
+			//SchemaExport schemaExport = new SchemaExport(configuration);
+			//schemaExport.create(true, true);
 
 			_RootDAO.initialize();
 
@@ -246,9 +266,20 @@ public class DatabaseUtil {
 			configuration = configuration.setProperty("hibernate.connection.password", password);
 			configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "update");
 
+
+
+
+			StandardServiceRegistryBuilder serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+			MetadataSources metadata = new MetadataSources(serviceRegistry.build());
+
+			EnumSet<TargetType> enumSet = EnumSet.of(TargetType.DATABASE);
+			SchemaExport schemaExport = new SchemaExport();
+			schemaExport.execute(enumSet, SchemaExport.Action.BOTH, metadata.buildMetadata());
+
+			/*
 			SchemaUpdate schemaUpdate = new SchemaUpdate(configuration);
 			schemaUpdate.execute(true, true);
-
+*/
 			_RootDAO.initialize();
 
 			return true;

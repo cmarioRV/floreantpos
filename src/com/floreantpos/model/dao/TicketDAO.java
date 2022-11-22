@@ -294,7 +294,9 @@ public class TicketDAO extends BaseTicketDAO {
 			List ticketList = criteria.list();
 
 			criteria.setProjection(Projections.rowCount());
-			Integer rowCount = (Integer) criteria.uniqueResult();
+
+			Integer rowCount = ((Number) criteria.uniqueResult()).intValue();
+			//Integer rowCount = (Integer) criteria.uniqueResult();
 			if (rowCount != null) {
 				tableModel.setNumRows(rowCount);
 

@@ -20,7 +20,6 @@ package com.floreantpos.model.dao;
 import java.sql.Connection;
 
 import org.hibernate.Session;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 import com.floreantpos.Database;

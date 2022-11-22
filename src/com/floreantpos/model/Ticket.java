@@ -491,6 +491,7 @@ public class Ticket extends BaseTicket {
 			return OrderType.DINE_IN;
 		}
 
+		type = type.replaceAll(" ", "_");
 		return OrderType.valueOf(type);
 	}
 
