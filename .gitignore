@@ -36,3 +36,5 @@ buildNumber.properties
 *.war
 *.ear
 hs_err_pid*
+.java-version
+config/printers.xml
