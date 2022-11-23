@@ -35,7 +35,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.view.JRViewer;
+import net.sf.jasperreports.view.JasperViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -115,7 +115,7 @@ public class CreditCardReportView extends JPanel {
 			totalTips += transaction.getTipsAmount();
 		}
 		
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		ReportUtil.populateRestaurantProperties(map);
 		map.put("reportTitle", Messages.getString("CreditCardReportView.0")); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("fromDate", ReportService.formatShortDate(fromDate)); //$NON-NLS-1$
@@ -129,7 +129,7 @@ public class CreditCardReportView extends JPanel {
 		
 		JasperReport jasperReport = ReportUtil.getReport("credit-card-report"); //$NON-NLS-1$
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRTableModelDataSource(new CardReportModel(transactions)));
-		JRViewer viewer = new JRViewer(jasperPrint);
+		JasperViewer viewer = new JasperViewer(jasperPrint);
 		reportContainer.removeAll();
 		reportContainer.add(viewer);
 		reportContainer.revalidate();

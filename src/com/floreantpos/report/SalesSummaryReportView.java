@@ -37,7 +37,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.view.JRViewer;
+import net.sf.jasperreports.view.JasperViewer;
 
 import com.floreantpos.model.Terminal;
 import com.floreantpos.model.UserType;
@@ -291,7 +291,7 @@ public class SalesSummaryReportView extends javax.swing.JPanel {
 	}
 
 	private void openReport(JasperPrint print) {
-		JRViewer viewer = new JRViewer(print);
+		JasperViewer viewer = new JasperViewer(print);
 		reportPanel.removeAll();
 		reportPanel.add(viewer);
 		reportPanel.revalidate();

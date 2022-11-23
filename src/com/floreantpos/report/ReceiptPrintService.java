@@ -93,7 +93,7 @@ public class ReceiptPrintService {
 	private static final SimpleDateFormat reportDateFormat = new SimpleDateFormat("M/d/yy, h:m a"); //$NON-NLS-1$
 
 	public static void printGenericReport(String title, String data) throws Exception {
-		HashMap<String, String> map = new HashMap<String, String>(2);
+		HashMap<String, Object> map = new HashMap<String, Object>(2);
 		map.put(TITLE, title);
 		map.put(DATA, data);
 		JasperPrint jasperPrint = createJasperPrint(ReportUtil.getReport("generic-receipt"), map, new JREmptyDataSource()); //$NON-NLS-1$
@@ -101,12 +101,12 @@ public class ReceiptPrintService {
 		printQuitely(jasperPrint);
 	}
 
-	public static JasperPrint createJasperPrint(JasperReport report, Map<String, String> properties, JRDataSource dataSource) throws Exception {
+	public static JasperPrint createJasperPrint(JasperReport report, Map<String, Object> properties, JRDataSource dataSource) throws Exception {
 		JasperPrint jasperPrint = JasperFillManager.fillReport(report, properties, dataSource);
 		return jasperPrint;
 	}
 
-	public static JasperPrint createPrint(Ticket ticket, Map<String, String> map, PosTransaction transaction) throws Exception {
+	public static JasperPrint createPrint(Ticket ticket, Map<String, Object> map, PosTransaction transaction) throws Exception {
 		TicketDataSource dataSource = new TicketDataSource(ticket);
 		return createJasperPrint(ReportUtil.getReport("ticket-receipt"), map, new JRTableModelDataSource(dataSource)); //$NON-NLS-1$
 	}

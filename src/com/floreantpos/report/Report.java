@@ -21,7 +21,7 @@ import java.util.Date;
 
 import com.floreantpos.model.Terminal;
 
-import net.sf.jasperreports.view.JRViewer;
+import net.sf.jasperreports.view.JasperViewer;
 
 public abstract class Report {
 	public static final int REPORT_TYPE_1 = 0;
@@ -32,7 +32,7 @@ public abstract class Report {
 	private Terminal terminal;
 	private int reportType = REPORT_TYPE_1;
 	private boolean includeFreeItem = false;
-	protected JRViewer viewer;
+	protected JasperViewer viewer;
 
 	public abstract void refresh() throws Exception;
 
@@ -40,7 +40,7 @@ public abstract class Report {
 
 	public abstract boolean isTypeSupported();
 
-	public JRViewer getViewer() {
+	public JasperViewer getViewer() {
 		return viewer;
 	}
 

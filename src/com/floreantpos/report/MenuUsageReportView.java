@@ -30,11 +30,12 @@ import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.view.JRViewer;
+import net.sf.jasperreports.view.JasperViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -98,16 +99,17 @@ public class MenuUsageReportView extends JPanel {
 		
 		ReportService reportService = new ReportService();
 		MenuUsageReport report = reportService.getMenuUsageReport(fromDate, toDate);
-		
-		HashMap<String, String> map = new HashMap<String, String>();
+
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("reportTitle", "========= MENU USAGE REPORT =========="); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("fromDate", ReportService.formatShortDate(fromDate)); //$NON-NLS-1$
 		map.put("toDate", ReportService.formatShortDate(toDate)); //$NON-NLS-1$
 		map.put("reportTime", ReportService.formatFullDate(new Date())); //$NON-NLS-1$
 		
 		JasperReport jasperReport = ReportUtil.getReport("menu_usage_report"); //$NON-NLS-1$
+
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRTableModelDataSource(report.getTableModel()));
-		JRViewer viewer = new JRViewer(jasperPrint);
+		JasperViewer viewer = new JasperViewer(jasperPrint);
 		reportContainer.removeAll();
 		reportContainer.add(viewer);
 		reportContainer.revalidate();

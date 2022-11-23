@@ -25,7 +25,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.view.JRViewer;
+import net.sf.jasperreports.view.JasperViewer;
 
 import com.floreantpos.Messages;
 import com.floreantpos.model.Ticket;
@@ -56,7 +56,7 @@ public class OpenTicketSummaryReport extends Report {
 		
 		JasperReport masterReport = ReportUtil.getReport("open_ticket_summary_report"); //$NON-NLS-1$
 		JasperPrint print = JasperFillManager.fillReport(masterReport, map, new JRTableModelDataSource(reportModel));
-		viewer = new JRViewer(print);
+		viewer = new JasperViewer(print);
 	}
 
 	@Override

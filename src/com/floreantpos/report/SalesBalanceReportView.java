@@ -35,7 +35,7 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JRViewer;
+import net.sf.jasperreports.view.JasperViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -104,7 +104,7 @@ public class SalesBalanceReportView extends JPanel {
 		ReportService reportService = new ReportService();
 		SalesBalanceReport report = reportService.getSalesBalanceReport(fromDate, toDate);
 		
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		ReportUtil.populateRestaurantProperties(map);
 		map.put("fromDate", shortDateFormatter.format(fromDate)); //$NON-NLS-1$
 		map.put("toDate", shortDateFormatter.format(toDate)); //$NON-NLS-1$
@@ -139,7 +139,7 @@ public class SalesBalanceReportView extends JPanel {
 		
 		JasperReport jasperReport = ReportUtil.getReport("sales_summary_balance_report"); //$NON-NLS-1$
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());
-		JRViewer viewer = new JRViewer(jasperPrint);
+		JasperViewer viewer = new JasperViewer(jasperPrint);
 		reportContainer.removeAll();
 		reportContainer.add(viewer);
 		reportContainer.revalidate();

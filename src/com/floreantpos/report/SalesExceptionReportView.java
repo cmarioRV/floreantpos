@@ -36,7 +36,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.view.JRViewer;
+import net.sf.jasperreports.view.JasperViewer;
 
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -120,7 +120,7 @@ public class SalesExceptionReportView extends JPanel {
 		
 		JasperReport jasperReport = ReportUtil.getReport("sales_summary_exception"); //$NON-NLS-1$
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JREmptyDataSource());
-		JRViewer viewer = new JRViewer(jasperPrint);
+		JasperViewer viewer = new JasperViewer(jasperPrint);
 		reportContainer.removeAll();
 		reportContainer.add(viewer);
 		reportContainer.revalidate();
