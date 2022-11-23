@@ -116,11 +116,8 @@ public class ModifierView extends SelectionView {
 					}
 				}
 				else {
-					if (modifier.getPrice() == 0) {
 						itemList.add(modifier);
-					}
 				}
-
 			}
 
 			setItems(itemList);

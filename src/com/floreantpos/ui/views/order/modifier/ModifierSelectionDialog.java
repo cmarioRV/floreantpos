@@ -208,6 +208,10 @@ public class ModifierSelectionDialog extends POSDialog implements ModifierGroupS
 		modifierSelectionModel.getTicketItem().calculatePrice();
 		modifierView.updateView();
 		ticketItemModifierView.updateView();
+
+		if(modifierGroupView.hasNextMandatoryGroup()) {
+			modifierGroupView.selectNextGroup();
+		}
 	}
 	
 	@Override
