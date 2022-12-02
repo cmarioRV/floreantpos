@@ -125,26 +125,12 @@ public class DatabaseUtil {
 			configuration = configuration.setProperty("hibernate.connection.password", password);
 			configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "create");
 
-
-/*
-			Map<String, String> settings = new HashMap<>();
-			settings.put("hibernate.connection.driver_class", hibernateConnectionDriverClass);
-			settings.put("hibernate.dialect", hibernateDialect);
-
-			settings.put("hibernate.connection.url", connectionString);
-			settings.put("hibernate.connection.username", user);
-			settings.put("hibernate.connection.password", password);
-			settings.put("hibernate.hbm2ddl.auto", "create");
-*/
 			StandardServiceRegistryBuilder serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
 			MetadataSources metadata = new MetadataSources(serviceRegistry.build());
 
 			EnumSet<TargetType> enumSet = EnumSet.of(TargetType.DATABASE);
 			SchemaExport schemaExport = new SchemaExport();
 			schemaExport.execute(enumSet, SchemaExport.Action.BOTH, metadata.buildMetadata());
-
-			//SchemaExport schemaExport = new SchemaExport(configuration);
-			//schemaExport.create(true, true);
 
 			_RootDAO.initialize();
 
@@ -266,9 +252,6 @@ public class DatabaseUtil {
 			configuration = configuration.setProperty("hibernate.connection.password", password);
 			configuration = configuration.setProperty("hibernate.hbm2ddl.auto", "update");
 
-
-
-
 			StandardServiceRegistryBuilder serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
 			MetadataSources metadata = new MetadataSources(serviceRegistry.build());
 
@@ -276,10 +259,6 @@ public class DatabaseUtil {
 			SchemaExport schemaExport = new SchemaExport();
 			schemaExport.execute(enumSet, SchemaExport.Action.BOTH, metadata.buildMetadata());
 
-			/*
-			SchemaUpdate schemaUpdate = new SchemaUpdate(configuration);
-			schemaUpdate.execute(true, true);
-*/
 			_RootDAO.initialize();
 
 			return true;
