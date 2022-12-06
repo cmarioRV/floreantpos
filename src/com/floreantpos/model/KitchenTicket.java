@@ -176,10 +176,14 @@ public class KitchenTicket extends BaseKitchenTicket {
 				if (ticketItemModifiers != null) {
 					for (TicketItemModifier itemModifier : ticketItemModifiers) {
 
+						if (!itemModifier.isShouldPrintToKitchen()) {
+							continue;
+						}
+						/*
 						if (itemModifier.isPrintedToKitchen() || !itemModifier.isShouldPrintToKitchen()) {
 							continue;
 						}
-
+						*/
 						KitchenTicketItem item = new KitchenTicketItem();
 						item.setMenuItemCode(""); //$NON-NLS-1$
 						item.setMenuItemName(itemModifier.getNameDisplay());

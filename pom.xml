@@ -213,12 +213,6 @@
 			<version>3.12.1.GA</version>
 		</dependency>
 
-		<dependency>
-			<groupId>jakarta.xml.bind</groupId>
-			<artifactId>jakarta.xml.bind-api</artifactId>
-			<version>4.0.0</version>
-		</dependency>
-
 		<!-- JAXB RI, Jakarta XML Binding -->
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
