@@ -17,12 +17,7 @@
  */
 package com.floreantpos.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -88,6 +83,57 @@ public class KitchenTicket extends BaseKitchenTicket {
 			printers.add(posPrinters.getDefaultKitchenPrinter());
 		}
 		
+		return printers;
+	}
+
+	public List<Printer> getPrinters(OrderType orderType) {
+		List<Printer> printers = new ArrayList<Printer>();
+
+		PosPrinters posPrinters = Application.getPrinters();
+		PrinterGroup virtualPrinter = getPrinterGroup();
+
+		if(virtualPrinter == null) {
+			printers.add(posPrinters.getDefaultKitchenPrinter());
+			return printers;
+		}
+
+		List<String> printerNames = virtualPrinter.getPrinterNames();
+		List<String> dineInPrinters = new ArrayList<>();
+		List<String> takeOutPrinters = new ArrayList<>();
+
+		for (String printerName : printerNames) {
+			if (printerName.contains("TakeOut")) {
+				takeOutPrinters.add(printerName);
+			}
+			else if (printerName.contains("DineIn")) {
+				dineInPrinters.add(printerName);
+			}
+		}
+
+		if (orderType == OrderType.TAKE_OUT) {
+			final Iterator iterator = dineInPrinters.iterator();
+			while (iterator.hasNext()) {
+				printerNames.remove(iterator.next());
+			}
+		}
+		else if (orderType == OrderType.DINE_IN) {
+			final Iterator iterator = takeOutPrinters.iterator();
+			while (iterator.hasNext()) {
+				printerNames.remove(iterator.next());
+			}
+		}
+
+		List<Printer> kitchenPrinters = posPrinters.getKitchenPrinters();
+		for (Printer printer : kitchenPrinters) {
+			if(printerNames.contains(printer.getVirtualPrinter().getName())) {
+				printers.add(printer);
+			}
+		}
+
+		if(printers.size() == 0) {
+			printers.add(posPrinters.getDefaultKitchenPrinter());
+		}
+
 		return printers;
 	}
 

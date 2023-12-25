@@ -500,7 +500,7 @@ public class ReceiptPrintService {
 
 			for (KitchenTicket kitchenTicket : kitchenTickets) {
 
-				List<Printer> printers = kitchenTicket.getPrinters();
+				List<Printer> printers = kitchenTicket.getPrinters(ticket.getType());
 				for (Printer printer : printers) {
 					String deviceName = printer.getDeviceName();
 

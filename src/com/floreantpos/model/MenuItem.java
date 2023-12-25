@@ -190,7 +190,6 @@ public class MenuItem extends BaseMenuItem {
 		ticketItem.setHasModifiers(hasModifiers());
 		if (this.getParent().getParent().isBeverage()) {
 			ticketItem.setBeverage(true);
-			ticketItem.setShouldPrintToKitchen(false);
 		} else {
 			ticketItem.setBeverage(false);
 			ticketItem.setShouldPrintToKitchen(true);

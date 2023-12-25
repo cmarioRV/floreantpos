@@ -20,12 +20,13 @@ package com.floreantpos.config.ui;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
+import com.floreantpos.model.OrderType;
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
@@ -41,8 +42,8 @@ public class VirtualPrinterConfigDialog extends POSDialog {
 	private VirtualPrinter printer;
 	private FixedLengthTextField tfName;
 
-//	private JCheckBox cbDineIn = new JCheckBox(OrderType.DINE_IN.toString());
-//	private JCheckBox cbTakeOut = new JCheckBox(OrderType.TAKE_OUT.toString());
+	private JCheckBox cbDineIn = new JCheckBox(OrderType.DINE_IN.toString());
+	private JCheckBox cbTakeOut = new JCheckBox(OrderType.TAKE_OUT.toString());
 //	private JCheckBox cbPickup = new JCheckBox(OrderType.PICKUP.toString());
 //	private JCheckBox cbHomeDeli = new JCheckBox(OrderType.HOME_DELIVERY.toString());
 //	private JCheckBox cbDriveThru = new JCheckBox(OrderType.DRIVE_THRU.toString());
@@ -68,15 +69,15 @@ public class VirtualPrinterConfigDialog extends POSDialog {
 		tfName = new FixedLengthTextField(60);
 		getContentPane().add(tfName, "cell 1 0,growx"); //$NON-NLS-1$
 
-//		JPanel orderTypePanel = new JPanel();
-//		orderTypePanel.setBorder(new TitledBorder("ORDER TYPE"));
-//		orderTypePanel.add(cbDineIn);
-//		orderTypePanel.add(cbTakeOut);
+		JPanel orderTypePanel = new JPanel();
+		orderTypePanel.setBorder(new TitledBorder("ORDER TYPE"));
+		orderTypePanel.add(cbDineIn);
+		orderTypePanel.add(cbTakeOut);
 //		orderTypePanel.add(cbPickup);
 //		orderTypePanel.add(cbHomeDeli);
 //		orderTypePanel.add(cbDriveThru);
 //		orderTypePanel.add(cbBarTab);
-//		add(orderTypePanel, "newline, grow, span 2");
+		add(orderTypePanel, "newline, grow, span 2");
 
 		JSeparator separator = new JSeparator();
 		getContentPane().add(separator, "cell 0 1 2 1,growx, gap top 50px"); //$NON-NLS-1$
@@ -124,14 +125,14 @@ public class VirtualPrinterConfigDialog extends POSDialog {
 
 			printer.setName(name);
 			
-//			List<String> orderTypeNames = new ArrayList<String>();
-//			
-//			if(cbDineIn.isSelected()) {
-//				orderTypeNames.add(OrderType.DINE_IN.name());
-//			}
-//			if(cbTakeOut.isSelected()) {
-//				orderTypeNames.add(OrderType.TAKE_OUT.name());
-//			}
+			List<String> orderTypeNames = new ArrayList<String>();
+
+			if(cbDineIn.isSelected()) {
+				orderTypeNames.add(OrderType.DINE_IN.name());
+			}
+			if(cbTakeOut.isSelected()) {
+				orderTypeNames.add(OrderType.TAKE_OUT.name());
+			}
 //			if(cbPickup.isSelected()) {
 //				orderTypeNames.add(OrderType.PICKUP.name());
 //			}
@@ -145,7 +146,7 @@ public class VirtualPrinterConfigDialog extends POSDialog {
 //				orderTypeNames.add(OrderType.BAR_TAB.name());
 //			}
 			
-//			printer.setOrderTypeNames(orderTypeNames);
+			printer.setOrderTypeNames(orderTypeNames);
 
 			printerDAO.saveOrUpdate(printer);
 
