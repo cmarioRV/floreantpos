@@ -172,7 +172,7 @@ public class OrderView extends ViewPanel {
 			//			}
 		}
 		
-		actionUpdate(null);
+		actionUpdate();
 		//		else if (selectedObject instanceof TicketItemModifier) {
 		//			selectedTicketItem = ((TicketItemModifier) selectedObject).getParent().getParent();
 		//			if (selectedTicketItem == null)
@@ -541,23 +541,6 @@ public class OrderView extends ViewPanel {
 		}
 	}
 
-	public void actionUpdate(ITicketItem item) {
-
-		if (item == null) {
-			btnCookingInstruction.setEnabled(false);
-			btnDiscount.setEnabled(false);
-			//				btnVoid.setEnabled(false);
-			//				btnAddOn.setEnabled(false);
-			return;
-		}
-
-		btnCookingInstruction.setEnabled(item.canAddCookingInstruction());
-		btnDiscount.setEnabled(item.canAddDiscount());
-		//			btnVoid.setEnabled(item.canAddAdOn());
-		//			btnAddOn.setEnabled(item.canVoid());
-	}
-
-	///
 	public void showView(final String viewName) {
 		cardLayout.show(midContainer, viewName);
 	}

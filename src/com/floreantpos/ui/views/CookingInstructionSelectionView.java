@@ -18,26 +18,34 @@
 package com.floreantpos.ui.views;
 
 import java.awt.BorderLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
 import com.floreantpos.Messages;
 import com.floreantpos.main.Application;
 import com.floreantpos.model.CookingInstruction;
 import com.floreantpos.model.TicketItemCookingInstruction;
+import com.floreantpos.model.dao.CookingInstructionDAO;
 import com.floreantpos.model.util.IllegalModelStateException;
+import com.floreantpos.swing.QwertyKeyPad;
 import com.floreantpos.ui.BeanEditor;
 import com.floreantpos.ui.dialog.POSMessageDialog;
+import net.miginfocom.swing.MigLayout;
 
 public class CookingInstructionSelectionView extends BeanEditor {
 	private JTable table;
 	
 	private List<TicketItemCookingInstruction> ticketItemCookingInstructions;
+
+	JTextField tfCookingInstruction = new JTextField();
 
 	public CookingInstructionSelectionView() {
 		createUI();
@@ -54,29 +62,61 @@ public class CookingInstructionSelectionView extends BeanEditor {
 		scrollPane.setViewportView(table);
 		
 		setBorder(new EmptyBorder(10, 10, 10, 10));
+
+		JPanel contentPanel = new JPanel(new MigLayout("fill,wrap 1,inset 0"));
+		contentPanel.add(scrollPane, "grow");
+		contentPanel.add(tfCookingInstruction, "h 35!,split 2,grow");
+		QwertyKeyPad keyPad = new QwertyKeyPad();
+		// contentPanel.add(keyPad, "grow");
+		add(contentPanel);
+
+		tfCookingInstruction.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) { doFilter(); }
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				doFilter();
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+			}
+		});
+
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				int index = table.getSelectedRow();
+				if (index < 0)
+					return;
+				CookingInstructionTableModel model = (CookingInstructionTableModel) table.getModel();
+				CookingInstruction cookingInstruction = model.rowsList.get(index);
+				tfCookingInstruction.setText(cookingInstruction.getDescription());
+			}
+		});
 	}
 
 	@Override
 	public boolean save() {
-		int[] selectedRows = table.getSelectedRows();
-		
-		if(selectedRows.length == 0) {
+		String instruction = tfCookingInstruction.getText();
+		if (instruction == null || instruction.isEmpty()) {
 			POSMessageDialog.showError(Application.getPosWindow(), Messages.getString("CookingInstructionSelectionView.0")); //$NON-NLS-1$
 			return false;
 		}
-		
-		if(ticketItemCookingInstructions == null) {
-			ticketItemCookingInstructions = new ArrayList<TicketItemCookingInstruction>(selectedRows.length);
+
+		if (ticketItemCookingInstructions == null) {
+			ticketItemCookingInstructions = new ArrayList<TicketItemCookingInstruction>(1);
 		}
-		
+
 		CookingInstructionTableModel model = (CookingInstructionTableModel) table.getModel();
-		for (int i = 0; i < selectedRows.length; i++) {
-			CookingInstruction ci = model.rowsList.get(selectedRows[i]);
-			TicketItemCookingInstruction cookingInstruction = new TicketItemCookingInstruction();
-			cookingInstruction.setDescription(ci.getDescription());
-			ticketItemCookingInstructions.add(cookingInstruction);
-		}
-		
+		TicketItemCookingInstruction cookingInstruction = new TicketItemCookingInstruction();
+		cookingInstruction.setDescription(instruction);
+		ticketItemCookingInstructions.add(cookingInstruction);
+
 		return true;
 	}
 
@@ -98,6 +138,28 @@ public class CookingInstructionSelectionView extends BeanEditor {
 	
 	public List<TicketItemCookingInstruction> getTicketItemCookingInstructions() {
 		return ticketItemCookingInstructions;
+	}
+
+	private void doFilter() {
+		String text = tfCookingInstruction.getText().toLowerCase();
+		if (text.length() < 2) {
+			updateView();
+			return;
+		}
+
+		List<CookingInstruction> filteredInstructions = new ArrayList<>();
+		CookingInstructionTableModel model = (CookingInstructionTableModel) table.getModel();
+
+		List<CookingInstruction> cookingInstructions = (List<CookingInstruction>) getBean();
+		for (CookingInstruction ci : cookingInstructions) {
+			String description = ci.getDescription().toLowerCase();
+			if (description.contains(text)) {
+				filteredInstructions.add(ci);
+			}
+		}
+
+		model.rowsList = filteredInstructions;
+		model.fireTableDataChanged();
 	}
 
 	class CookingInstructionTableModel extends AbstractTableModel {
